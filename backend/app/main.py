@@ -3,9 +3,18 @@ import pandas as pd
 from fastapi import FastAPI
 from pydantic import BaseModel
 from datetime import datetime, timedelta
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 
+# Allow frontend origin only
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000"],  # frontend address
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # ---------- Models ----------
 class GenerateRequest(BaseModel):
