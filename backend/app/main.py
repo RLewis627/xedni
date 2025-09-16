@@ -1,3 +1,4 @@
+import os
 import numpy as np
 import pandas as pd
 from fastapi import FastAPI
@@ -8,9 +9,10 @@ from fastapi.middleware.cors import CORSMiddleware
 app = FastAPI()
 
 # Allow frontend origin only
+allowed_origins = os.getenv("ALLOWED_ORIGINS", "http://localhost:3000").split(",")
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],  # frontend address
+    allow_origins=allowed_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
