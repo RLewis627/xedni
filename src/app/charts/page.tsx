@@ -5,8 +5,9 @@ import { useEffect, useState } from "react";
 import { ResponsiveContainer, ComposedChart, XAxis,
          YAxis, Tooltip, CartesianGrid, Bar, Line
 } from "recharts";
+import CandleChart from "@/components/CandleChart";
 
-type StockData = {
+type Candle = {
   date: string;
   open: number;
   high: number;
@@ -16,35 +17,53 @@ type StockData = {
 };
 
 export default function ChartsPage() {
-  const [data, setData] = useState<StockData[]>([]);
+  const [candles, setCandles] = useState<Candle[]>([]);
+  const [signals, setSignals] = useState<{ index: number; type: "buy" | "sell" }[]>([]);
 
   useEffect(() => {
-    // Call to backend to fetch stock data
-    axios
-      .post("http://127.0.0.1:8000/generate", {
-        ticker: "FAKE",
-        days: 100,
-        start_price: 100,
-      })
-      .then((res) => { setData(res.data); })
-      .catch((err) => console.error(err));
+    const fetchData = async () => {
+      try {
+        // get fake stock data
+        const res = await axios.post("http://127.0.0.1:8000/generate", {
+          ticker: "FAKE",
+          days: 100,
+          start_price: 100,
+        });
+        setCandles(res.data);
+
+        // send closing prices to /backtest
+        const closes = res.data.map((d: Candle) => d.close);
+        const backtestRes = await axios.post("http://127.0.0.1:8000/backtest", {
+          prices: closes,
+          short_window: 5,
+          long_window: 20,
+        });
+
+        // convert signals trade markers
+        const rawSignals: number[] = backtestRes.data.signals;
+        const markers: { index: number; type: "buy" | "sell" }[] = [];
+
+        for (let i = 1; i < rawSignals.length; i++) {
+          if (rawSignals[i] === 1 && rawSignals[i - 1] === 0)
+            markers.push({ index: i, type: "buy" });
+          else if (rawSignals[i] === 0 && rawSignals[i - 1] === 1)
+            markers.push({ index: i, type: "sell" });
+        }
+        setSignals(markers);
+      } catch (err) { console.error(err); }
+    };
+
+    fetchData();
   }, []);
 
   return (
     <div className="p-8">
-      <h1 className="text-2xl font-bold mb-6">Candlestick Chart Demo</h1>
-      {data.length > 0 ? (
-        <ResponsiveContainer width="100%" height={500}>
-          <ComposedChart data={data}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="date" tickFormatter={(v) => v.slice(5, 10)} />
-            <YAxis />
-            <Tooltip />
-            <Line type="monotone" dataKey="close" stroke="#8884d8" dot={false} />
-            <Bar dataKey="volume" barSize={10} fill="#82ca9d" yAxisId={1} />
-          </ComposedChart>
-        </ResponsiveContainer>
-      ) : (<p>Loading data...</p>)}
+      <h1 className="text-2xl font-bold mb-6">Trading Playground</h1>
+      {candles.length > 0 ? (
+        <CandleChart data={candles} signals={signals} />
+      ) : (
+        <p>Loading chart...</p>
+      )}
     </div>
   );
 }
