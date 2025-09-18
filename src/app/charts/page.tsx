@@ -2,9 +2,6 @@
 
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { ResponsiveContainer, ComposedChart, XAxis,
-         YAxis, Tooltip, CartesianGrid, Bar, Line
-} from "recharts";
 import CandleChart from "@/components/CandleChart";
 
 type Candle = {
@@ -24,7 +21,7 @@ export default function ChartsPage() {
     const fetchData = async () => {
       try {
         // get fake stock data
-        const res = await axios.post("http://127.0.0.1:8000/generate", {
+        const res = await axios.post("https://xedni-api.vercel.app/generate", {
           ticker: "FAKE",
           days: 100,
           start_price: 100,
@@ -33,7 +30,7 @@ export default function ChartsPage() {
 
         // send closing prices to /backtest
         const closes = res.data.map((d: Candle) => d.close);
-        const backtestRes = await axios.post("http://127.0.0.1:8000/backtest", {
+        const backtestRes = await axios.post("https://xedni-api.vercel.app/backtest", {
           prices: closes,
           short_window: 5,
           long_window: 20,
