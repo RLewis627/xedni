@@ -24,7 +24,7 @@ export default function ChartsPage() {
         const res = await axios.post("https://xedni-api.vercel.app/generate", {
           ticker: "FAKE",
           days: 100,
-          start_price: 100,
+          start_price: 50.0,
         });
         setCandles(res.data);
 
