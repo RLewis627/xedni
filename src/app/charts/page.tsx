@@ -21,7 +21,7 @@ export default function ChartsPage() {
     const fetchData = async () => {
       try {
         // get fake stock data
-        const res = await axios.post("https://xedni-api.vercel.app/generate", {
+        const res = await axios.post("https://xedni-api.vercel.app/v1/generate", {
           ticker: "FAKE",
           days: 100,
           start_price: 50.0,
