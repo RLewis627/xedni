@@ -55,6 +55,8 @@ export default function CandleChart({ data, signals = [] }: Props) {
       }))
     );
 
+    chart.timeScale().fitContent();
+
     // overlay buy/sell markers
     signals.forEach((s) => {
       const candle = data[s.index];
