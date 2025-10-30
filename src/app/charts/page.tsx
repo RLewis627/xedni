@@ -24,29 +24,9 @@ export default function ChartsPage() {
         const res = await axios.post("https://xedni-api.vercel.app/v1/generate", {
           ticker: "FAKE",
           days: 100,
-          start_price: 100,
+          start_price: 50.0,
         });
         setCandles(res.data);
-
-        // send closing prices to /backtest
-        const closes = res.data.map((d: Candle) => d.close);
-        const backtestRes = await axios.post("https://xedni-api.vercel.app/backtest", {
-          prices: closes,
-          short_window: 5,
-          long_window: 20,
-        });
-
-        // convert signals trade markers
-        const rawSignals: number[] = backtestRes.data.signals;
-        const markers: { index: number; type: "buy" | "sell" }[] = [];
-
-        for (let i = 1; i < rawSignals.length; i++) {
-          if (rawSignals[i] === 1 && rawSignals[i - 1] === 0)
-            markers.push({ index: i, type: "buy" });
-          else if (rawSignals[i] === 0 && rawSignals[i - 1] === 1)
-            markers.push({ index: i, type: "sell" });
-        }
-        setSignals(markers);
       } catch (err) { console.error(err); }
     };
 
@@ -57,7 +37,7 @@ export default function ChartsPage() {
     <div className="p-8">
       <h1 className="text-2xl font-bold mb-6">Trading Playground</h1>
       {candles.length > 0 ? (
-        <CandleChart data={candles} signals={signals} />
+        <CandleChart data={candles} />
       ) : (
         <p>Loading chart...</p>
       )}
