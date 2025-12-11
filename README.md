@@ -1,36 +1,60 @@
+
+# Xedni ("zed-nee")
+
+Web app for testing common or custom trading strategies on pre-generated, fake stock data.
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-## Getting Started
+[![Vercel Deploy](https://deploy-badge.vercel.app/vercel/xedni-sandbox?name=xedni)](https://xedni-sandbox.vercel.app/)
 
-First, run the development server:
+![Vercel Deploy](https://deploy-badge.vercel.app/vercel/xedni-api?root=health&name=xedni-api)
+
+
+## Stack
+
+**Client:** React, Next.js, Typescript, TailwindCSS
+
+**Server:** FastAPI (Python), Uvicorn
+
+**Database:** Supabase (PostgreSQL)
+
+
+## Features
+
+[![Board Status](https://dev.azure.com/rachel-dev-projects/2c2f020b-7dd6-4c14-8a5d-cb5e676769dd/3dbf211b-23b0-4e2c-b6e0-f96b49bfdf9f/_apis/work/boardbadge/56b84713-8bf1-45ce-9543-1b3eadfd5fce?columnOptions=1)](https://dev.azure.com/rachel-dev-projects/2c2f020b-7dd6-4c14-8a5d-cb5e676769dd/_boards/board/t/3dbf211b-23b0-4e2c-b6e0-f96b49bfdf9f/Features/)
+
+| Feature             | Sprint   | Dev  | Prod |
+| :----------------   | :------- | :--: | :--: |
+| Prices Candle Chart | Sprint 1 | 🟡  | ✔️  |
+| Prices Table Chart  | Sprint 2 | ❌  | ❌  |
+| Portfolio Creator   | Sprint 2 | ❌  | ❌  |
+| Backtesting Setup   | Sprint 3 | ❌  | ❌  |
+
+
+## Run Locally
+
+Clone the project
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+  git clone https://github.com/RLewis627/xedni.git
+```
+
+Go to the project directory
+
+```bash
+  cd xedni
+```
+
+Install dependencies
+
+```bash
+  npm install
+```
+
+Start the server
+
+```bash
+  npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
