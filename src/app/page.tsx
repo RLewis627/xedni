@@ -7,8 +7,8 @@ interface HomePageState {
   formInput: boolean;
 }
 
-export default class HomePage extends Component<any, HomePageState> {
-  constructor(props: any){
+export default class HomePage extends Component<unknown, HomePageState> {
+  constructor(props: unknown) {
     super(props);
     this.state = {formInput: false,};
   }
